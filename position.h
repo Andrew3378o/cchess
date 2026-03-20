@@ -18,3 +18,5 @@ typedef struct
 void init_starting_position(Position *position);
 
 void print_position(Position *position);
+
+uint64_t get_pawns_moves(Position *position, int color);
