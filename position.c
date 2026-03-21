@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "position.h"
+#include "constants.h"
 
 void init_starting_position(Position *position){
     memset(position, 0, sizeof(Position));
@@ -54,25 +55,4 @@ void print_position(Position *position){
         printf("\n");
     }
     printf("  [ a][ b][ c][ d][ e][ f][ g][ h]\n\n");
-}
-
-uint64_t get_pawns_moves(Position *position, int color) {
-    uint64_t pawns = position->pieces[PAWN] & position->colors[color];
-    uint64_t empty_squares = ~position->colors[BOTH];
-    uint64_t moves = 0ULL;
-
-    if (color == WHITE) {
-        uint64_t single_push = (pawns << 8) & empty_squares;
-        moves |= single_push;
-
-        moves |= (single_push << 8) & empty_squares & 0x00000000FF000000ULL;
-    } 
-    else {
-        uint64_t single_push = (pawns >> 8) & empty_squares;
-        moves |= single_push;
-
-        moves |= (single_push >> 8) & empty_squares & 0x000000FF00000000ULL;
-    }
-
-    return moves;
 }

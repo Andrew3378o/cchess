@@ -1,9 +1,6 @@
 #pragma once
 #include <stdint.h>
 
-enum { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
-enum { WHITE, BLACK, BOTH };
-
 typedef struct
 {
     uint64_t pieces[8];
@@ -18,5 +15,3 @@ typedef struct
 void init_starting_position(Position *position);
 
 void print_position(Position *position);
-
-uint64_t get_pawns_moves(Position *position, int color);
