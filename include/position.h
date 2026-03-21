@@ -14,4 +14,3 @@ typedef struct
 
 void init_starting_position(Position *position);
 
-void print_position(Position *position);
