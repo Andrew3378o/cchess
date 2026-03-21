@@ -58,3 +58,20 @@ void init_knights_moves() {
         knight_moves[i] = moves;
     }
 }
+
+uint64_t get_kings_moves(Position *position, int color){
+    uint64_t king = position->pieces[KING] & position->colors[color];
+    uint64_t moves = 0ULL;
+
+    moves |= (king >> 8) | (king << 8);
+
+    if(king & ~FILE_A){
+        moves |= (king << 7) | (king >> 1) | (king >> 9);
+    }
+
+    if(king & ~FILE_H){
+        moves |= (king << 9) | (king << 1) | (king >> 7);
+    }
+
+    return moves & ~position->colors[color];
+}
