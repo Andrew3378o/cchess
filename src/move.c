@@ -59,6 +59,14 @@ void init_knights_moves() {
     }
 }
 
+uint64_t get_knights_moves(int sq, Position *position, int color){
+    uint64_t attacks = knight_moves[sq];
+
+    uint64_t moves = attacks & ~position->colors[color];
+    
+    return moves;
+}
+
 uint64_t get_kings_moves(Position *position, int color){
     uint64_t king = position->pieces[KING] & position->colors[color];
     uint64_t moves = 0ULL;
