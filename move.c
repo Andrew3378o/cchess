@@ -24,6 +24,21 @@ uint64_t get_pawns_moves(Position *position, int color) {
     return moves;
 }
 
+uint64_t get_pawns_attacks(Position *position, int color){
+    uint64_t pawns = position->pieces[PAWN] & position->colors[color];
+    uint64_t attacks = 0ULL;
+
+    if(color == WHITE){
+        attacks |= (pawns << 7) & ~FILE_H;
+        attacks |= (pawns << 9) & ~FILE_A;
+    }
+    else{
+        attacks |= (pawns >> 7) & ~FILE_A;
+        attacks |= (pawns >> 9) & ~FILE_H;
+    }
+    return attacks;
+}
+
 uint64_t knight_moves[64];
 void init_knights_moves() {
 
