@@ -83,3 +83,28 @@ bitboard get_kings_moves(Position *position, int color){
 
     return moves & ~position->colors[color];
 }
+
+
+bitboard get_bishop_moves(int sq, Position *position, int color){
+    bitboard all_pieces = position->colors[BOTH];
+    bitboard occupancy = all_pieces & bishop_masks[sq];
+    
+    int magic_index = (occupancy * bishop_magic_numbers[sq]) >> (64 - bishop_bits_numbers[sq]);
+    bitboard raw = bishop_attacks[sq][magic_index];
+
+    return raw & ~position->colors[color];
+}
+
+bitboard get_rook_moves(int sq, Position *position, int color){
+    bitboard all_pieces = position->colors[BOTH];
+    bitboard occupancy = all_pieces & rook_masks[sq];
+
+    int magic_index = (occupancy * rook_magic_numbers[sq]) >> (64 - rook_bits_numbers[sq]);
+    bitboard raw = rook_attacks[sq][magic_index];
+
+    return raw & ~position->colors[color];
+}
+
+bitboard get_queen_moves(int sq, Position *position, int color){
+    return get_bishop_moves(sq, position, color) | get_rook_moves(sq, position, color);
+}
