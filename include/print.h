@@ -1,6 +1,7 @@
 #pragma once
 #include "position.h"
+#include "constants.h"
 
 void print_position(Position *position);
 
-void print_moves(uint64_t moves);
+void print_moves(bitboard moves);

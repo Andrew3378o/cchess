@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <intrin.h>
 #include "print.h"
 #include "constants.h"
 
@@ -10,7 +12,7 @@ void print_position(Position *position){
         for(int file = 0; file < 8; file++){
             int index = rank * 8 + file;
 
-            uint64_t bit = 1ULL << index;
+            bitboard bit = 1ULL << index;
             char *piece_name = "[  ]";
 
             if (position->colors[WHITE] & bit) {
@@ -37,10 +39,7 @@ void print_position(Position *position){
     printf("  [ a][ b][ c][ d][ e][ f][ g][ h]\n\n");
 }
 
-#include <stdio.h>
-#include <intrin.h>
-
-void print_moves(uint64_t moves) {
+void print_moves(bitboard moves) {
     unsigned long i;
     
     if (moves == 0) {

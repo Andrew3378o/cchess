@@ -12,7 +12,7 @@ int main(){
 
 	print_position(&p);
 
-	uint64_t moves = get_pawns_moves(&p, WHITE) | get_pawns_moves(&p, BLACK);
+	bitboard moves = get_pawns_moves(&p, WHITE) | get_pawns_moves(&p, BLACK);
 	printf("possible pawns moves for both colors:\n");
 	print_moves(moves);
 
