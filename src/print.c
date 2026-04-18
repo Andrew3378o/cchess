@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <intrin.h>
 #include "print.h"
 #include "constants.h"
+#include "magic.h"
 
 void print_position(Position *position){
     printf("\n");
@@ -40,16 +40,14 @@ void print_position(Position *position){
 }
 
 void print_moves(bitboard moves) {
-    unsigned long i;
-    
     if (moves == 0) {
         printf("none\n");
         return;
     }
 
     while (moves) {
-        _BitScanForward64(&i, moves);
         
+        int i = get_lsb_index(moves);
         int rank = (i / 8) + 1;      
         char file = 'a' + (i % 8);   
         

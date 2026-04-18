@@ -22,11 +22,32 @@ bitboard get_magic_candidate();
 bitboard find_magic_number(int sq, int bits_number, int is_bishop);
 void init_magic_bitboards();
 
-static inline int get_lsb_index(bitboard b){
-    if(b == 0) return -1;
-    return __builtin_ctzll(b);
-}
+#if defined(_MSC_VER)
+    #include <intrin.h>
 
-static inline int count_bits(bitboard b) {
-    return __builtin_popcountll(b);
-}
+    static inline int count_bits(bitboard b) {
+        return (int)__popcnt64(b);
+    }
+
+    static inline int get_lsb_index(bitboard b) {
+        unsigned long idx;
+        if (_BitScanForward64(&idx, b)) {
+            return (int)idx;
+        }
+        return -1;
+    }
+
+#elif defined(__GNUC__) || defined(__clang__)
+
+    static inline int count_bits(bitboard b) {
+        return __builtin_popcountll(b);
+    }
+
+    static inline int get_lsb_index(bitboard b) {
+        if (b == 0) return -1;
+        return __builtin_ctzll(b);
+    }
+
+#else
+    #error "Unsupported compiler"
+#endif
