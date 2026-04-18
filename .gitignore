@@ -5,3 +5,6 @@ out/
 *.obj
 *.pdb
 *.ilk
+CMakeFiles/
+.directory
+.megaignore

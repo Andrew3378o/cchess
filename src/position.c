@@ -1,3 +1,4 @@
+#include <string.h>
 #include "position.h"
 #include "constants.h"
 

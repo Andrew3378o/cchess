@@ -1,7 +1,7 @@
 #include "move.h"
 #include "constants.h"
 
-bitboard get_pawns_moves(Position *position, int color) {
+bitboard get_pawns_moves(Position *position, Color color) {
     bitboard pawns = position->pieces[PAWN] & position->colors[color];
     bitboard empty_squares = ~position->colors[BOTH];
     bitboard moves = 0ULL;
@@ -24,7 +24,7 @@ bitboard get_pawns_moves(Position *position, int color) {
     return moves;
 }
 
-bitboard get_pawns_attacks(Position *position, int color){
+bitboard get_pawns_attacks(Position *position, Color color){
     bitboard pawns = position->pieces[PAWN] & position->colors[color];
     bitboard attacks = 0ULL;
 
@@ -59,7 +59,7 @@ void init_knights_moves() {
     }
 }
 
-bitboard get_knights_moves(int sq, Position *position, int color){
+bitboard get_knights_moves(Square sq, Position *position, Color color){
     bitboard attacks = knight_moves[sq];
 
     bitboard moves = attacks & ~position->colors[color];
@@ -67,7 +67,7 @@ bitboard get_knights_moves(int sq, Position *position, int color){
     return moves;
 }
 
-bitboard get_kings_moves(Position *position, int color){
+bitboard get_kings_moves(Position *position, Color color){
     bitboard king = position->pieces[KING] & position->colors[color];
     bitboard moves = 0ULL;
 
@@ -84,8 +84,7 @@ bitboard get_kings_moves(Position *position, int color){
     return moves & ~position->colors[color];
 }
 
-
-bitboard get_bishop_moves(int sq, Position *position, int color){
+bitboard get_bishop_moves(Square sq, Position *position, Color color){
     bitboard all_pieces = position->colors[BOTH];
     bitboard occupancy = all_pieces & bishop_masks[sq];
     
@@ -95,7 +94,7 @@ bitboard get_bishop_moves(int sq, Position *position, int color){
     return raw & ~position->colors[color];
 }
 
-bitboard get_rook_moves(int sq, Position *position, int color){
+bitboard get_rook_moves(Square sq, Position *position, Color color){
     bitboard all_pieces = position->colors[BOTH];
     bitboard occupancy = all_pieces & rook_masks[sq];
 
@@ -105,6 +104,6 @@ bitboard get_rook_moves(int sq, Position *position, int color){
     return raw & ~position->colors[color];
 }
 
-bitboard get_queen_moves(int sq, Position *position, int color){
+bitboard get_queen_moves(Square sq, Position *position, Color color){
     return get_bishop_moves(sq, position, color) | get_rook_moves(sq, position, color);
 }

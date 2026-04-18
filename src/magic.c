@@ -10,7 +10,7 @@ bitboard rook_magic_numbers[64];
 bitboard bishop_attacks[64][512];
 bitboard rook_attacks[64][4096];
 
-bitboard get_rook_mask(int sq){
+bitboard get_rook_mask(Square sq){
     bitboard mask = 0ULL;
 
     int r = sq / 8;
@@ -26,7 +26,7 @@ bitboard get_rook_mask(int sq){
     return mask;
 }
 
-bitboard get_rook_on_the_fly(int sq, bitboard blocked){
+bitboard get_rook_on_the_fly(Square sq, bitboard blocked){
     bitboard attacks = 0ULL;
 
     int r = sq / 8;
@@ -62,7 +62,7 @@ bitboard get_rook_on_the_fly(int sq, bitboard blocked){
     return attacks;
 }
 
-bitboard get_bishop_mask(int sq){
+bitboard get_bishop_mask(Square sq){
     bitboard mask = 0ULL;
 
     int r = sq / 8;
@@ -78,7 +78,7 @@ bitboard get_bishop_mask(int sq){
     return mask;
 }
 
-bitboard get_bishop_on_the_fly(int sq, bitboard blocked){
+bitboard get_bishop_on_the_fly(Square sq, bitboard blocked){
     bitboard attacks = 0ULL;
 
     int r = sq / 8;
@@ -140,7 +140,7 @@ bitboard get_magic_candidate(){
     return get_random_bitboard() & get_random_bitboard() & get_random_bitboard();
 }
 
-bitboard find_magic_number(int sq, int bits_number, int is_bishop){
+bitboard find_magic_number(Square sq, int bits_number, int is_bishop){
     bitboard occupancies[4096];
     bitboard attacks[4096];
     bitboard used_attacks[4096];

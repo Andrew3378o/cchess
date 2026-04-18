@@ -11,15 +11,15 @@ extern bitboard rook_magic_numbers[64];
 extern bitboard bishop_attacks[64][512];
 extern bitboard rook_attacks[64][4096];
 
-bitboard get_rook_mask(int sq);
-bitboard get_rook_on_the_fly(int sq, bitboard blocked);
-bitboard get_bishop_mask(int sq);
-bitboard get_bishop_on_the_fly(int sq, bitboard blocked);
+bitboard get_rook_mask(Square sq);
+bitboard get_rook_on_the_fly(Square sq, bitboard blocked);
+bitboard get_bishop_mask(Square sq);
+bitboard get_bishop_on_the_fly(Square sq, bitboard blocked);
 
 bitboard set_occupancy(int index, int bits_number, bitboard attacks);
 bitboard get_random_bitboard();
 bitboard get_magic_candidate();
-bitboard find_magic_number(int sq, int bits_number, int is_bishop);
+bitboard find_magic_number(Square sq, int bits_number, int is_bishop);
 void init_magic_bitboards();
 
 #if defined(_MSC_VER)

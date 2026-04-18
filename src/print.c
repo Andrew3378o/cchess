@@ -32,7 +32,7 @@ void print_position(Position *position){
                 else if (position->pieces[KING]   & bit) piece_name = "[-K]";
             }
 
-            printf(piece_name);
+            printf("%s", piece_name);
         }
         printf("\n");
     }
