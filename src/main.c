@@ -12,12 +12,12 @@ int main(){
 
 	print_position(&p);
 
-	bitboard moves = get_pawns_moves(&p, WHITE) | get_pawns_moves(&p, BLACK);
-	printf("possible pawns moves for both colors:\n");
+	bitboard moves = get_pawns_moves(&p, WHITE);
+	printf("possible pawns moves for white:\n");
 	print_moves(moves);
 
-	moves = get_knights_moves(B1, &p, WHITE) | get_knights_moves(G1, &p, WHITE) | get_knights_moves(B8, &p, BLACK) | get_knights_moves(G8, &p, BLACK);
-	printf("possible knights moves for both colors:\n");
+	moves = get_knights_moves(B1, &p, WHITE) | get_knights_moves(G1, &p, WHITE);
+	printf("possible knights moves for white:\n");
 	print_moves(moves);
 	return 0;
 }
