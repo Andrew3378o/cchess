@@ -1,3 +1,6 @@
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "move.h"
 #include "constants.h"
 
@@ -106,4 +109,101 @@ bitboard get_rook_moves(Square sq, Position *position, Color color){
 
 bitboard get_queen_moves(Square sq, Position *position, Color color){
     return get_bishop_moves(sq, position, color) | get_rook_moves(sq, position, color);
+}
+
+int parse_move(const char *input, Move *move){
+
+    move->castling = A1;
+    move->to = A1;
+    move->piece = PAWN;
+    move->castling = -1; // no castling
+
+    if(input == NULL){
+        return -1;
+    }
+    else if(strcmp(input, "O-O") == 0){
+        move->castling = 0; // short castling
+    }
+    else if(strcmp(input, "O-O-O") == 0){
+        move->castling = 1; // long castling
+    }
+    else if(strlen(input) >= 4){
+        int from_file = tolower(input[0]) - 'a';
+        int from_rank = input[1] - '1';
+        int to_file = tolower(input[2]) - 'a';
+        int to_rank = input[3] - '1';
+
+        if(from_file < 0 || from_file > 7 || from_rank < 0 || from_rank > 7 ||
+        to_file < 0 || to_file > 7 || to_rank < 0 || to_rank > 7) return -1;
+
+        move->from = (Square)(from_rank * 8 + from_file);
+        move->to = (Square)(to_rank * 8 + to_file);
+
+        if(strlen(input) >= 5){
+            char promotion = tolower(input[4]);
+            switch (promotion){
+                case 'q': move->piece = QUEEN; break;
+                case 'r': move->piece = ROOK; break;
+                case 'b': move->piece = BISHOP; break;
+                case 'n': move->piece = KNIGHT; break;
+                default: break;
+            }
+        }
+    }
+    else{
+        return -1;
+    }
+
+    return 1;
+}
+
+int make_move(Position *position, Move move){
+    bitboard from_bit = 1ULL << move.from;
+    bitboard to_bit = 1ULL << move.to;
+
+    Color side = position->whose_turn;
+    Color enemy = (side == WHITE) ? BLACK: WHITE;
+
+    Piece moving_piece = PAWN;
+    for(int p = PAWN; p <= KING; p++){
+        if(position->pieces[p] & from_bit){
+            moving_piece = p;
+            break;
+        }
+    }
+
+    position->pieces[moving_piece] &= ~from_bit;
+    position->colors[side] &= ~from_bit;
+
+    if(position->colors[enemy] & to_bit){
+        for(int p = PAWN; p <= KING; p++){
+            if(position->pieces[p] & to_bit){
+                position->pieces[p] &= ~to_bit;
+                break;
+            }
+        }
+        position->colors[enemy] &= ~to_bit;
+    }
+
+    if(moving_piece == PAWN && move.piece != PAWN){
+        position->pieces[move.piece] |= to_bit;
+    }
+    else{
+        position->pieces[moving_piece] |= to_bit;
+    }
+    position->colors[side] |= to_bit;
+
+    position->colors[BOTH] = position->colors[WHITE] | position->colors[BLACK];
+
+    position->whose_turn = enemy;
+
+    //todo: castling moves
+    //todo: en passant
+    //todo: check for legal moves
+
+    return 1;
+}
+
+int is_legal(Position *position, Move move){
+    return 1;
 }
