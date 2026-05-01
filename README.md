@@ -2,7 +2,7 @@
 **cchess** is a lightweight, high-performance chess engine written in pure C. The project focuses on the efficiency of low-level programming to handle complex move generation and position evaluation.
 
 
-![Chess Board Interface](images/board_example_1.png)
+![Chess Board Interface](images/board_example_2.png)
 Picture 1. Example of visuals of the project at the current state.
 
 ## Current features
