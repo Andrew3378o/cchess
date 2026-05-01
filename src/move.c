@@ -245,5 +245,50 @@ int is_legal(Position position, Move move){
 
     if(moves == 0ULL) return -1;
 
+    Position temp = position;
+    make_move(&temp, move);
+    bitboard king_bit = temp.pieces[KING] & temp.colors[side];
+
+    if (king_bit == 0ULL) return -1;
+
+    Square king_sq = (Square) get_lsb_index(king_bit);
+
+    if(is_square_attacked(temp, king_sq, enemy)) return -1;
+
     return 1;
+}
+
+int is_square_attacked(Position position, Square sq, Color attacker){
+    Color defender = (attacker == WHITE) ? BLACK : WHITE;
+    
+    bitboard sq_bit = 1ULL << sq; 
+
+    bitboard attacks = position.pieces[KNIGHT] & position.colors[attacker];
+    if(knight_moves[sq] & attacks) return 1;
+
+    attacks = (position.pieces[BISHOP] | position.pieces[QUEEN]) & position.colors[attacker];
+    if(attacks){
+        if(get_bishop_moves(sq, position, defender) & attacks) return 1;
+    }
+
+    attacks = (position.pieces[ROOK] | position.pieces[QUEEN]) & position.colors[attacker];
+    if(attacks){
+        if(get_rook_moves(sq, position, defender) & attacks) return 1;
+    }
+
+    attacks = position.pieces[PAWN] & position.colors[attacker];
+    if (attacker == WHITE) {
+        if (((sq_bit >> 7) & ~FILE_A & attacks) || ((sq_bit >> 9) & ~FILE_H & attacks)) return 1;
+    } else {
+        if (((sq_bit << 7) & ~FILE_H & attacks) || ((sq_bit << 9) & ~FILE_A & attacks)) return 1;
+    }
+
+    bitboard king_attacks = 0ULL;
+    king_attacks |= (sq_bit >> 8) | (sq_bit << 8);
+    if (sq_bit & ~FILE_A) king_attacks |= (sq_bit << 7) | (sq_bit >> 1) | (sq_bit >> 9);
+    if (sq_bit & ~FILE_H) king_attacks |= (sq_bit << 9) | (sq_bit << 1) | (sq_bit >> 7);
+    
+    if (king_attacks & position.pieces[KING] & position.colors[attacker]) return 1;
+
+    return 0;
 }

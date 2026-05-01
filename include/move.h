@@ -24,5 +24,6 @@ bitboard get_kings_moves(Position position, Color color);
 int parse_move(const char *input, Move *move, Color side);
 int make_move(Position *position, Move move);
 int is_legal(Position position, Move move);
+int is_square_attacked(Position position, Square sq, Color attacker);
 
 void init_knights_moves();

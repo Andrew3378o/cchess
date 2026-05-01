@@ -9,7 +9,11 @@ int main() {
     Position p;
 
     init_starting_position(&p);
+
+    printf("Initializing knights moves...\n\n");
     init_knights_moves();
+
+    printf("Initializing magic bitboards...\n\n");
     init_magic_bitboards();
 
     print_position(&p);
@@ -17,7 +21,7 @@ int main() {
     while (1) {
         char input[10]; 
 
-        printf("\nEnter move (e.g., e2e4) or 'q' to quit: ");
+        printf("\nEnter move in LAN (e.g., e2e4, 0-0, 0-0-0) or 'q' to quit: ");
         
         if (scanf("%9s", input) != 1) {
             break;
