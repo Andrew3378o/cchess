@@ -19,7 +19,7 @@
 #define RANK_7 (RANK_1 << 48)
 #define RANK_8 (RANK_1 << 56)
 
-typedef enum { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } Piece;
+typedef enum { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, NONE } Piece;
 typedef enum { WHITE, BLACK, BOTH } Color;
 typedef enum {
   A1, B1, C1, D1, E1, F1, G1, H1,

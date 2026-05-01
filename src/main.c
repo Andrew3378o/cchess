@@ -10,6 +10,7 @@ int main() {
 
     init_starting_position(&p);
     init_knights_moves();
+    init_magic_bitboards();
 
     print_position(&p);
 
@@ -28,18 +29,20 @@ int main() {
         }
 
         Move m;
-		int success = parse_move(input, &m);
+		int success = parse_move(input, &m, p.whose_turn);
         if ((m.from == m.to && m.castling == -1) || success == -1) {
             printf("Invalid move format! Please try again.\n");
             continue; 
         }
 
-        success = make_move(&p, m);
-        if (success) {
-            print_position(&p);
-        } else {
-            printf("Illegal move! Try again.\n");
+        success = is_legal(p, m);
+        if(success == -1){
+            printf("Illegal move. Please try again.\n");
+            continue;
         }
+
+        make_move(&p, m);
+        print_position(&p);
     }
 
     return 0;
