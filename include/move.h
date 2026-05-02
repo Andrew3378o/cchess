@@ -11,8 +11,6 @@ typedef struct {
     int castling;
 } Move;
 
-extern bitboard knight_moves[64];
-
 bitboard get_pawns_moves(Position position, Color color);
 bitboard get_pawns_attacks(Position position, Color color);
 bitboard get_knights_moves(Square sq, Position position, Color color);

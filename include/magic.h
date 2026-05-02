@@ -2,19 +2,17 @@
 #include <stdlib.h>
 #include "constants.h"
 
-extern bitboard bishop_masks[64];
-extern bitboard rook_masks[64];
-extern int bishop_bits_numbers[64];
-extern int rook_bits_numbers[64];
-extern bitboard bishop_magic_numbers[64];
-extern bitboard rook_magic_numbers[64];
-extern bitboard bishop_attacks[64][512];
-extern bitboard rook_attacks[64][4096];
+bitboard get_bishop_mask(Square sq);
+bitboard get_bishop_on_the_fly(Square sq, bitboard blocked);
+bitboard *get_bishop_attacks(Square sq);
+int get_bishop_magic_number(Square sq);
+int get_bishop_bits_number(Square sq);
 
 bitboard get_rook_mask(Square sq);
 bitboard get_rook_on_the_fly(Square sq, bitboard blocked);
-bitboard get_bishop_mask(Square sq);
-bitboard get_bishop_on_the_fly(Square sq, bitboard blocked);
+bitboard *get_rook_attacks(Square sq);
+int get_rook_magic_number(Square sq);
+int get_rook_bits_number(Square sq);
 
 bitboard set_occupancy(int index, int bits_number, bitboard attacks);
 bitboard get_random_bitboard();

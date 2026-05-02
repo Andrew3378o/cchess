@@ -2,6 +2,9 @@
 #include <ctype.h>
 #include "move.h"
 #include "constants.h"
+#include "magic.h"
+
+static bitboard knight_moves[64];
 
 bitboard get_pawns_moves(Position position, Color color) {
     bitboard pawns = position.pieces[PAWN] & position.colors[color];
@@ -41,7 +44,6 @@ bitboard get_pawns_attacks(Position position, Color color){
     return attacks;
 }
 
-bitboard knight_moves[64];
 void init_knights_moves() {
     for(int i = A1; i <= H8; i++){
         bitboard bit = (1ULL << i);
@@ -85,20 +87,20 @@ bitboard get_kings_moves(Position position, Color color){
 
 bitboard get_bishop_moves(Square sq, Position position, Color color){
     bitboard all_pieces = position.colors[BOTH];
-    bitboard occupancy = all_pieces & bishop_masks[sq];
+    bitboard occupancy = all_pieces & get_bishop_mask(sq);
     
-    int magic_index = (occupancy * bishop_magic_numbers[sq]) >> (64 - bishop_bits_numbers[sq]);
-    bitboard raw = bishop_attacks[sq][magic_index];
+    int magic_index = (occupancy * get_bishop_magic_number(sq)) >> (64 - get_bishop_bits_number(sq));
+    bitboard raw = get_bishop_attacks(sq)[magic_index];
 
     return raw & ~position.colors[color];
 }
 
 bitboard get_rook_moves(Square sq, Position position, Color color){
     bitboard all_pieces = position.colors[BOTH];
-    bitboard occupancy = all_pieces & rook_masks[sq];
+    bitboard occupancy = all_pieces & get_rook_mask(sq);
 
-    int magic_index = (occupancy * rook_magic_numbers[sq]) >> (64 - rook_bits_numbers[sq]);
-    bitboard raw = rook_attacks[sq][magic_index];
+    int magic_index = (occupancy * get_rook_magic_number(sq)) >> (64 - get_rook_bits_number(sq));
+    bitboard raw = get_rook_attacks(sq)[magic_index];
 
     return raw & ~position.colors[color];
 }

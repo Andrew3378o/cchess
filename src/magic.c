@@ -1,14 +1,38 @@
 #include <stdio.h>
 #include "magic.h"
 
-bitboard bishop_masks[64];
-bitboard rook_masks[64];
-int bishop_bits_numbers[64];
-int rook_bits_numbers[64];
-bitboard bishop_magic_numbers[64];
-bitboard rook_magic_numbers[64];
-bitboard bishop_attacks[64][512];
-bitboard rook_attacks[64][4096];
+static bitboard bishop_masks[64];
+static bitboard rook_masks[64];
+static int bishop_bits_numbers[64];
+static int rook_bits_numbers[64];
+static bitboard bishop_magic_numbers[64];
+static bitboard rook_magic_numbers[64];
+static bitboard bishop_attacks[64][512];
+static bitboard rook_attacks[64][4096];
+
+bitboard *get_bishop_attacks(Square sq){
+    return bishop_attacks[sq];
+}
+
+int get_bishop_magic_number(Square sq){
+    return bishop_magic_numbers[sq];
+}
+
+int get_bishop_bits_number(Square sq){
+    return bishop_bits_numbers[sq];
+}
+
+bitboard *get_rook_attacks(Square sq){
+    return rook_attacks[sq];
+}
+
+int get_rook_magic_number(Square sq){
+    return rook_magic_numbers[sq];
+}
+
+int get_rook_bits_number(Square sq){
+    return rook_bits_numbers[sq];
+}
 
 bitboard get_rook_mask(Square sq){
     bitboard mask = 0ULL;
