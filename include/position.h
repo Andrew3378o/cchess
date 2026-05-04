@@ -9,7 +9,10 @@ typedef struct
     bitboard colors[3];
 
     uint8_t castling_rights;
+
     Color whose_turn;
+
+    int en_passant;
     
 } Position;
 

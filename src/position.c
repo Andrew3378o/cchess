@@ -18,4 +18,6 @@ void init_starting_position(Position *position){
 
     position->whose_turn = WHITE;
     position->castling_rights = 0b1111;
+
+    position->en_passant = -1;
 }

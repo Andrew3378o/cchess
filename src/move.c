@@ -237,6 +237,14 @@ int make_move(Position *position, Move move) {
     position->pieces[moving_piece] &= ~from_bit;
     position->colors[side] &= ~from_bit;
 
+    if (moving_piece == PAWN && move.to == position->en_passant){
+        Square pawn_sq = (side == WHITE) ? (move.to - 8) : (move.to + 8);
+        bitboard captured_bit = 1ULL << pawn_sq;
+
+        position->pieces[PAWN] &= ~captured_bit;
+        position->colors[enemy] &= ~ captured_bit;
+    }
+
     if(position->colors[enemy] & to_bit){
         for(int p = PAWN; p <= KING; p++){
             if(position->pieces[p] & to_bit){
@@ -262,7 +270,16 @@ int make_move(Position *position, Move move) {
     position->castling_rights &= castling_rights_update[move.from];
     position->castling_rights &= castling_rights_update[move.to];
 
-    //todo: en passant
+    position->en_passant = -1;
+    if(moving_piece == PAWN){
+        int diff = (int)move.to - (int)move.from;
+        if(diff == 16){
+            position->en_passant = move.from + 8;
+        }
+        else if(diff == -16){
+            position->en_passant = move.from - 8;
+        }
+    }
 
     return 0;
 }
@@ -365,7 +382,13 @@ int is_legal(Position position, Move move) {
             Position temp = position;
             temp.pieces[PAWN] = from_bit; 
             bitboard pushes = get_pawns_moves(temp, move.color);
-            bitboard attacks = get_pawns_attacks(temp, move.color) & position.colors[enemy];
+
+            bitboard enemy_targets = position.colors[enemy];
+            if (position.en_passant != -1){
+                enemy_targets |= (1ULL << position.en_passant);
+            }
+
+            bitboard attacks = get_pawns_attacks(temp, move.color) & enemy_targets;
             moves = (to_bit & pushes) | (to_bit & attacks);
             break;
         }
