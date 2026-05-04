@@ -49,6 +49,27 @@ int main() {
 
         make_move(&p, m);
         print_position(&p);
+
+        Color current = p.whose_turn;
+        Color enemy = (current == WHITE) ? BLACK : WHITE;
+
+        bitboard king = p.pieces[KING] & p.colors[current];
+        Square king_sq = (Square) get_lsb_index(king);
+
+        int in_check = is_square_attacked(p, king_sq, enemy);
+        int can_move = has_legal_moves(p);
+
+        if(in_check && !can_move) {
+            printf("MATE! GAME IS OVER. %s WON!\n", (current == WHITE) ? "BLACK" : "WHITE");
+            break;
+        }
+        else if(!in_check && !can_move) {
+            printf("STALEMATE! GAME IS OVER. DRAW!\n");
+            break;
+        }
+        else if(in_check && can_move) {
+            printf("CHECK!\n");
+        }
     }
 
     return 0;

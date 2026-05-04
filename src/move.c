@@ -291,63 +291,63 @@ int is_legal(Position position, Move move) {
     if (move.castling != -1) {
         Square king_sq = (side == WHITE) ? E1 : E8;
         if (is_square_attacked(position, king_sq, enemy)) {
-            printf("[DEBUG] castling illegal - king is currently in check.\n");
+            //printf("[DEBUG] castling illegal - king is currently in check.\n");
             return 1;
         }
         if (side == WHITE) {
             if (move.castling == 0) {
-                printf("[DEBUG] castling rights - %d\n", position.castling_rights);
+                //printf("[DEBUG] castling rights - %d\n", position.castling_rights);
                 if (!(position.castling_rights & WK)) {
-                    printf("[DEBUG] missing white king-side castling rights (WK).\n");
+                    //printf("[DEBUG] missing white king-side castling rights (WK).\n");
                     return 1;
                 }
                 if (position.colors[BOTH] & ((1ULL << F1) | (1ULL << G1))) {
-                    printf("[DEBUG] castling path F1-G1 is blocked by pieces.\n");
+                    //printf("[DEBUG] castling path F1-G1 is blocked by pieces.\n");
                     return 1;
                 }
                 if (is_square_attacked(position, F1, enemy) || is_square_attacked(position, G1, enemy)) {
-                    printf("[DEBUG] castling squares (F1 or G1) are under attack.\n");
+                    //printf("[DEBUG] castling squares (F1 or G1) are under attack.\n");
                     return 1;
                 }
             } else { 
                 if (!(position.castling_rights & WQ)) {
-                    printf("[DEBUG] missing white queen-side castling rights (WQ).\n");
+                    //printf("[DEBUG] missing white queen-side castling rights (WQ).\n");
                     return 1;
                 }
                 if (position.colors[BOTH] & ((1ULL << B1) | (1ULL << C1) | (1ULL << D1))) {
-                    printf("[DEBUG] castling path B1-C1-D1 is blocked by pieces.\n");
+                    //printf("[DEBUG] castling path B1-C1-D1 is blocked by pieces.\n");
                     return 1;
                 }
                 if (is_square_attacked(position, D1, enemy) || is_square_attacked(position, C1, enemy)) {
-                    printf("[DEBUG] king path squares (D1 or C1) are under attack.\n");
+                    //printf("[DEBUG] king path squares (D1 or C1) are under attack.\n");
                     return 1;
                 }
             }
         } else { 
             if (move.castling == 0) {
                 if (!(position.castling_rights & BK)) {
-                    printf("[DEBUG] missing black king-side castling rights (BK).\n");
+                    //printf("[DEBUG] missing black king-side castling rights (BK).\n");
                     return 1;
                 }
                 if (position.colors[BOTH] & ((1ULL << F8) | (1ULL << G8))) {
-                    printf("[DEBUG] castling path F8-G8 is blocked.\n");
+                    //printf("[DEBUG] castling path F8-G8 is blocked.\n");
                     return 1;
                 }
                 if (is_square_attacked(position, F8, enemy) || is_square_attacked(position, G8, enemy)) {
-                    printf("[DEBUG] black king-side squares (F8 or G8) are under attack.\n");
+                    //printf("[DEBUG] black king-side squares (F8 or G8) are under attack.\n");
                     return 1;
                 }
             } else {
                 if (!(position.castling_rights & BQ)) {
-                    printf("[DEBUG] missing black queen-side castling rights (BQ).\n");
+                    //printf("[DEBUG] missing black queen-side castling rights (BQ).\n");
                     return 1;
                 }
                 if (position.colors[BOTH] & ((1ULL << B8) | (1ULL << C8) | (1ULL << D8))) {
-                    printf("[DEBUG] castling path B8-C8-D8 is blocked.\n");
+                    //printf("[DEBUG] castling path B8-C8-D8 is blocked.\n");
                     return 1;
                 }
                 if (is_square_attacked(position, D8, enemy) || is_square_attacked(position, C8, enemy)) {
-                    printf("[DEBUG] black queen-side squares (D8 or C8) are under attack.\n");
+                    //printf("[DEBUG] black queen-side squares (D8 or C8) are under attack.\n");
                     return 1;
                 }
             }
@@ -360,7 +360,7 @@ int is_legal(Position position, Move move) {
     bitboard moves = 0ULL;
 
     if ((position.colors[side] & from_bit) == 0ULL) {
-        printf("[DEBUG] no piece of your color found on the source square.\n");
+        //printf("[DEBUG] no piece of your color found on the source square.\n");
         return 1;
     }
 
@@ -373,7 +373,7 @@ int is_legal(Position position, Move move) {
     }
 
     if (moving_piece == NONE) {
-        printf("[DEBUG] error - piece not found on internal bitboards.\n");
+        //printf("[DEBUG] error - piece not found on internal bitboards.\n");
         return 1;
     }
 
@@ -384,7 +384,7 @@ int is_legal(Position position, Move move) {
             bitboard pushes = get_pawns_moves(temp, move.color);
 
             bitboard enemy_targets = position.colors[enemy];
-            if (position.en_passant != -1){
+            if ((int)position.en_passant != -1){
                 enemy_targets |= (1ULL << position.en_passant);
             }
 
@@ -401,7 +401,7 @@ int is_legal(Position position, Move move) {
     }
 
     if(moves == 0ULL) {
-        printf("[DEBUG] pseudo-legality fail - piece cannot reach the target square.\n");
+        //printf("[DEBUG] pseudo-legality fail - piece cannot reach the target square.\n");
         return 1;
     }
 
@@ -410,14 +410,14 @@ int is_legal(Position position, Move move) {
     bitboard king_bit = temp.pieces[KING] & temp.colors[side];
 
     if (king_bit == 0ULL) {
-        printf("[DEBUG] error - king disappeared from the board.\n");
+        //printf("[DEBUG] error - king disappeared from the board.\n");
         return 1;
     }
 
     Square king_sq = (Square)get_lsb_index(king_bit);
 
     if(is_square_attacked(temp, king_sq, enemy)) {
-        printf("[DEBUG] illegal move - king is in check after the move.\n");
+        //printf("[DEBUG] illegal move - king is in check after the move.\n");
         return 1;
     }
 
@@ -455,6 +455,38 @@ int is_square_attacked(Position position, Square sq, Color attacker){
     if (sq_bit & ~FILE_H) king_attacks |= (sq_bit << 9) | (sq_bit << 1) | (sq_bit >> 7);
     
     if (king_attacks & position.pieces[KING] & position.colors[attacker]) return 1;
+
+    return 0;
+}
+
+int has_legal_moves(Position position){
+    Color side = position.whose_turn;
+    Move m;
+    m.color = side;
+    m.piece = NONE;
+
+    for(int from = A1; from <= H8; from++){
+        if((position.colors[side] & (1ULL << from)) == 0ULL) continue;
+        for(int to = A1; to <= H8; to++){
+            if(from == to) continue;
+
+            m.from = (Square) from;
+            m.to = (Square) to;
+            m.castling = -1;
+
+            if(is_legal(position, m) == 0){
+                return 1;
+            }
+        }
+    }
+
+    m.from = A1;
+    m.to = A1;
+    m.castling = 0;
+    if(is_legal(position, m) == 0) return 1;
+
+    m.castling = 1;
+    if(is_legal(position, m) == 0) return 1;
 
     return 0;
 }
