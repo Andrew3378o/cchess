@@ -14,7 +14,7 @@ bitboard *get_bishop_attacks(Square sq){
     return bishop_attacks[sq];
 }
 
-int get_bishop_magic_number(Square sq){
+bitboard get_bishop_magic_number(Square sq){
     return bishop_magic_numbers[sq];
 }
 
@@ -26,7 +26,7 @@ bitboard *get_rook_attacks(Square sq){
     return rook_attacks[sq];
 }
 
-int get_rook_magic_number(Square sq){
+bitboard get_rook_magic_number(Square sq){
     return rook_magic_numbers[sq];
 }
 

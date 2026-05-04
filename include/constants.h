@@ -32,4 +32,13 @@ typedef enum {
   A8, B8, C8, D8, E8, F8, G8, H8
 } Square;
 
+typedef enum Castling {
+  NO_CASTLING = 0, 
+  WK = 1,          
+  WQ = 2,          
+  BK = 4,          
+  BQ = 8,          
+  ALL_CASTLING = 15
+} Castling;
+
 typedef uint64_t bitboard;

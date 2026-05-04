@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "position.h"
 #include "move.h"
 #include "constants.h"
 #include "print.h"
 
 int main() {
+    srand(12345);
     Position p;
 
     init_starting_position(&p);
@@ -21,7 +23,7 @@ int main() {
     while (1) {
         char input[10]; 
 
-        printf("\nEnter move in LAN (e.g., e2e4, 0-0, 0-0-0) or 'q' to quit: ");
+        printf("\nEnter move in LAN (e.g., e2e4, O-O, O-O-O) or 'q' to quit: ");
         
         if (scanf("%9s", input) != 1) {
             break;
@@ -34,14 +36,14 @@ int main() {
 
         Move m;
 		int success = parse_move(input, &m, p.whose_turn);
-        if ((m.from == m.to && m.castling == -1) || success == -1) {
+        if ((m.from == m.to && m.castling == -1) || success == 1) {
             printf("Invalid move format! Please try again.\n");
             continue; 
         }
 
         success = is_legal(p, m);
-        if(success == -1){
-            printf("Illegal move. Please try again.\n");
+        if(success == 1){
+            printf("Illegal move! Please try again.\n");
             continue;
         }
 
