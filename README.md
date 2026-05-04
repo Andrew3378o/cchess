@@ -9,9 +9,9 @@ Picture 1. Example of visuals of the project at the current state.
 * **bitboard engine**: core board representation using 64-bit integers for lightning-fast bitwise operations.
 * **ANSI terminal UI**: a custom-built terminal interface featuring colored cells and Unicode symbols for pieces.
 * **move generation**: efficient calculation of legal moves using bitwise shifts and masks to maximize performance.
+* **parser of user input**: conversion of Long Algebraic Notation strings into internal bitboard moves.
 
 ## Future features
-* **parser of user input**: conversion of Long Algebraic Notation strings into internal bitboard moves.
 * **position evaluation**: implementation of material weights and piece-square tables for tactical assessment.
 * **search algorithm**: minimax search with alpha-beta pruning to find the optimal move.
 
