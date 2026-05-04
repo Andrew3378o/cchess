@@ -379,6 +379,15 @@ int is_legal(Position position, Move move) {
 
     switch (moving_piece) {
         case PAWN: {
+            int to_rank = move.to / 8;
+
+            if(to_rank == 0 || to_rank == 7){
+                if(move.piece == PAWN || move.piece == NONE) return 1;
+            }
+            else{
+                if(move.piece != PAWN && move.piece != NONE) return 1;
+            }
+
             Position temp = position;
             temp.pieces[PAWN] = from_bit; 
             bitboard pushes = get_pawns_moves(temp, move.color);
