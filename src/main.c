@@ -5,11 +5,26 @@
 #include "move.h"
 #include "constants.h"
 #include "print.h"
+#include "zobrist.h"
+
+bitboard game_history[1024];
+int history_ply = 0;
+
+int is_repetition(bitboard current_hash) {
+    int count = 0;
+    for (int i = 0; i < history_ply; i++) {
+        if (game_history[i] == current_hash) {
+            count++;
+        }
+    }
+    return (count >= 2);
+}
 
 int main() {
     srand(12345);
     Position p;
 
+    printf("Initializing starting position...\n\n");
     init_starting_position(&p);
 
     printf("Initializing knights moves...\n\n");
@@ -18,12 +33,16 @@ int main() {
     printf("Initializing magic bitboards...\n\n");
     init_magic_bitboards();
 
+    printf("Initializing zobrist keys...\n\n");
+    init_zobrist();
+
+    game_history[history_ply++] = generate_hash(&p);
     print_position(&p);
 
     while (1) {
         char input[10]; 
 
-        printf("\nEnter move in LAN (e.g., e2e4, O-O, O-O-O) or 'q' to quit: ");
+        printf("\nEnter move in LAN or 'q' to quit: ");
         
         if (scanf("%9s", input) != 1) {
             break;
@@ -49,6 +68,15 @@ int main() {
 
         make_move(&p, m);
         print_position(&p);
+
+        bitboard current_hash = generate_hash(&p);
+        
+        if (is_repetition(current_hash)) {
+            printf("\nDRAW BY REPETITION!\n");
+            break;
+        }
+        
+        game_history[history_ply++] = current_hash;
 
         Color current = p.whose_turn;
         Color enemy = (current == WHITE) ? BLACK : WHITE;
