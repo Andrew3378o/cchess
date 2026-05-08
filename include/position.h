@@ -12,4 +12,5 @@ typedef struct
 } Position;
 
 void init_starting_position(Position *position);
+int is_insufficient_material(Position *p);
 

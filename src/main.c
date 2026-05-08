@@ -75,6 +75,10 @@ int main() {
             printf("\nDRAW BY REPETITION!\n");
             break;
         }
+        if (is_insufficient_material(&p)) {
+            printf("\nDRAW BY INSUFFICIENT MATERIAL!\n");
+            break;
+        }
         
         game_history[history_ply++] = current_hash;
 

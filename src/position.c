@@ -21,3 +21,34 @@ void init_starting_position(Position *position){
 
     position->en_passant = -1;
 }
+
+int is_insufficient_material(Position *p) {
+    if (p->pieces[PAWN] || p->pieces[ROOK] || p->pieces[QUEEN]) {
+        return 0;
+    }
+
+    int w_knights = count_bits(p->pieces[KNIGHT] & p->colors[WHITE]);
+    int b_knights = count_bits(p->pieces[KNIGHT] & p->colors[BLACK]);
+    int w_bishops = count_bits(p->pieces[BISHOP] & p->colors[WHITE]);
+    int b_bishops = count_bits(p->pieces[BISHOP] & p->colors[BLACK]);
+
+    int total_minors = w_knights + b_knights + w_bishops + b_bishops;
+
+    if (total_minors == 0) return 1;
+
+    if (total_minors == 1) return 1;
+
+    if (w_knights == 0 && b_knights == 0 && w_bishops == 1 && b_bishops == 1) {
+        bitboard w_bishop = p->pieces[BISHOP] & p->colors[WHITE];
+        bitboard b_bishop = p->pieces[BISHOP] & p->colors[BLACK];
+        
+        bitboard light_squares = 0x55AA55AA55AA55AAULL;
+        
+        int wb_is_light = (w_bishop & light_squares) != 0;
+        int bb_is_light = (b_bishop & light_squares) != 0;
+
+        if (wb_is_light == bb_is_light) return 1;
+    }
+
+    return 0;
+}
